@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#25635a">
+    <meta name="description" content="Application PWA pour suivre les lavages et sechages sur une annee.">
+    <title>Lessive</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Suivi annuel</p>
+        <h1 id="appTitle">Lessive</h1>
+      </div>
+
+      <label class="year-picker" for="yearInput">
+        <span>Annee</span>
+        <input id="yearInput" type="number" inputmode="numeric" min="2000" max="2100" step="1">
+      </label>
+    </header>
+
+    <main class="app-shell">
+      <section class="toolbar" aria-label="Actions principales">
+        <button id="addRowBtn" class="primary-button" type="button">+ Ajouter une ligne</button>
+        <button id="printBtn" class="secondary-button" type="button">Exporter / Imprimer en PDF</button>
+        <button id="backupBtn" class="secondary-button" type="button">Sauvegarder les donn&eacute;es</button>
+        <button id="restoreBtn" class="secondary-button" type="button">Restaurer une sauvegarde</button>
+        <input id="restoreInput" class="file-input" type="file" accept="application/json,.json">
+      </section>
+
+      <section class="status-line" aria-live="polite">
+        <span id="saveStatus">Sauvegarde locale active</span>
+      </section>
+
+      <section class="table-wrap" aria-label="Tableau des lessives">
+        <table class="laundry-table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Lavages</th>
+              <th scope="col">Sechages</th>
+              <th scope="col" class="actions-col">Action</th>
+            </tr>
+          </thead>
+          <tbody id="entriesBody"></tbody>
+        </table>
+
+        <div id="emptyState" class="empty-state" hidden>
+          Aucune ligne pour cette annee.
+        </div>
+      </section>
+
+      <section class="totals-panel" aria-label="Totaux">
+        <div>
+          <span>Total lavages</span>
+          <strong id="totalWash">0</strong>
+        </div>
+        <div>
+          <span>Total sechages</span>
+          <strong id="totalDry">0</strong>
+        </div>
+        <div class="grand-total">
+          <span>Total general</span>
+          <strong id="totalAll">0</strong>
+        </div>
+      </section>
+    </main>
+
+    <section id="printView" class="print-view" aria-hidden="true">
+      <h1 id="printTitle">Tableau des lessives</h1>
+      <table class="print-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Nbr lavage</th>
+            <th>Nbr sechage</th>
+          </tr>
+        </thead>
+        <tbody id="printBody"></tbody>
+      </table>
+      <div class="print-totals">
+        <p>Total lavages : <strong id="printTotalWash">0</strong></p>
+        <p>Total sechages : <strong id="printTotalDry">0</strong></p>
+        <p>Total general : <strong id="printTotalAll">0</strong></p>
+      </div>
+    </section>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
