@@ -100,14 +100,21 @@ h1 {
 }
 
 .toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  padding: 12px 0;
   margin-bottom: 12px;
+  background: rgba(246, 247, 244, 0.96);
+  border-bottom: 1px solid var(--line);
 }
 
 .primary-button,
-.secondary-button {
+.secondary-button,
+.danger-button {
   padding: 12px 18px;
   font-weight: 700;
 }
@@ -125,6 +132,11 @@ h1 {
   background: var(--surface-soft);
   color: var(--accent-dark);
   border: 1px solid #c7d8d3;
+}
+
+.danger-button {
+  background: var(--danger);
+  color: #ffffff;
 }
 
 .file-input {
@@ -264,6 +276,46 @@ tbody tr:last-child td {
 
 .print-view {
   display: none;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(31, 42, 42, 0.38);
+}
+
+.modal-backdrop[hidden] {
+  display: none;
+}
+
+.modal-panel {
+  width: min(440px, 100%);
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.modal-panel h2 {
+  margin: 0 0 10px;
+  font-size: 1.35rem;
+}
+
+.modal-panel p {
+  margin: 0 0 18px;
+  color: var(--muted);
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 @media (max-width: 720px) {

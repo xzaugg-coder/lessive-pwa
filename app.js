@@ -17,6 +17,7 @@
     printBtn: document.getElementById("printBtn"),
     backupBtn: document.getElementById("backupBtn"),
     restoreBtn: document.getElementById("restoreBtn"),
+    quitBtn: document.getElementById("quitBtn"),
     restoreInput: document.getElementById("restoreInput"),
     saveStatus: document.getElementById("saveStatus"),
     entriesBody: document.getElementById("entriesBody"),
@@ -28,8 +29,15 @@
     printBody: document.getElementById("printBody"),
     printTotalWash: document.getElementById("printTotalWash"),
     printTotalDry: document.getElementById("printTotalDry"),
-    printTotalAll: document.getElementById("printTotalAll")
+    printTotalAll: document.getElementById("printTotalAll"),
+    actionModal: document.getElementById("actionModal"),
+    modalTitle: document.getElementById("modalTitle"),
+    modalMessage: document.getElementById("modalMessage"),
+    modalCancelBtn: document.getElementById("modalCancelBtn"),
+    modalConfirmBtn: document.getElementById("modalConfirmBtn")
   };
+
+  let modalConfirmHandler = null;
 
   function init() {
     elements.yearInput.value = String(state.year);
@@ -44,8 +52,20 @@
     elements.addRowBtn.addEventListener("click", addEntry);
     elements.printBtn.addEventListener("click", printPdf);
     elements.backupBtn.addEventListener("click", exportBackup);
-    elements.restoreBtn.addEventListener("click", () => elements.restoreInput.click());
+    elements.restoreBtn.addEventListener("click", confirmRestorePicker);
+    elements.quitBtn.addEventListener("click", quitApp);
     elements.restoreInput.addEventListener("change", handleRestoreFile);
+    elements.modalCancelBtn.addEventListener("click", hideActionModal);
+    elements.actionModal.addEventListener("click", (event) => {
+      if (event.target === elements.actionModal) {
+        hideActionModal();
+      }
+    });
+    elements.modalConfirmBtn.addEventListener("click", () => {
+      if (typeof modalConfirmHandler === "function") {
+        modalConfirmHandler();
+      }
+    });
   }
 
   function handleYearChange() {
@@ -183,7 +203,7 @@
     deleteButton.className = "delete-button";
     deleteButton.type = "button";
     deleteButton.textContent = "Supprimer";
-    deleteButton.addEventListener("click", () => deleteEntry(entry.id));
+    deleteButton.addEventListener("click", () => confirmDelete(entry.id));
     actionCell.appendChild(deleteButton);
 
     row.append(dateCell, washCell, dryCell, actionCell);
@@ -282,6 +302,56 @@
     renderPrintView();
     document.title = `Lessive_${state.year}`;
     window.print();
+  }
+
+  function quitApp() {
+    window.close();
+
+    window.setTimeout(() => {
+      setSaveStatus("Vous pouvez fermer l'application avec le bouton retour ou accueil de la tablette.");
+    }, 300);
+  }
+
+  function confirmDelete(id) {
+    showActionModal({
+      title: "Supprimer la ligne",
+      message: "Supprimer cette ligne de lessive ?",
+      confirmText: "Supprimer",
+      danger: true,
+      onConfirm: () => {
+        hideActionModal();
+        deleteEntry(id);
+      }
+    });
+  }
+
+  function confirmRestorePicker() {
+    showActionModal({
+      title: "Restaurer une sauvegarde",
+      message: "Choisissez un fichier JSON exporte auparavant. Vous pourrez encore annuler avant de remplacer les donnees.",
+      confirmText: "Choisir un fichier",
+      danger: false,
+      onConfirm: () => {
+        hideActionModal();
+        elements.restoreInput.click();
+      }
+    });
+  }
+
+  function showActionModal(options) {
+    elements.modalTitle.textContent = options.title;
+    elements.modalMessage.textContent = options.message;
+    elements.modalConfirmBtn.textContent = options.confirmText;
+    elements.modalConfirmBtn.className = options.danger ? "danger-button" : "primary-button";
+    modalConfirmHandler = options.onConfirm;
+    elements.actionModal.hidden = false;
+    elements.modalCancelBtn.focus();
+  }
+
+  function hideActionModal() {
+    elements.actionModal.hidden = true;
+    modalConfirmHandler = null;
+    elements.modalConfirmBtn.className = "primary-button";
   }
 
   function exportBackup() {

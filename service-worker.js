@@ -1,4 +1,4 @@
-const CACHE_NAME = "lessive-pwa-v2";
+const CACHE_NAME = "lessive-pwa-v3";
 const FILES_TO_CACHE = [
   "./",
   "./index.html",

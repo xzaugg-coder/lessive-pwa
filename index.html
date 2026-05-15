@@ -28,6 +28,7 @@
         <button id="printBtn" class="secondary-button" type="button">Exporter / Imprimer en PDF</button>
         <button id="backupBtn" class="secondary-button" type="button">Sauvegarder les donn&eacute;es</button>
         <button id="restoreBtn" class="secondary-button" type="button">Restaurer une sauvegarde</button>
+        <button id="quitBtn" class="secondary-button" type="button">Quitter</button>
         <input id="restoreInput" class="file-input" type="file" accept="application/json,.json">
       </section>
 
@@ -68,6 +69,17 @@
         </div>
       </section>
     </main>
+
+    <div id="actionModal" class="modal-backdrop" hidden>
+      <section class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <h2 id="modalTitle">Confirmation</h2>
+        <p id="modalMessage"></p>
+        <div class="modal-actions">
+          <button id="modalCancelBtn" class="secondary-button" type="button">Annuler</button>
+          <button id="modalConfirmBtn" class="primary-button" type="button">Confirmer</button>
+        </div>
+      </section>
+    </div>
 
     <section id="printView" class="print-view" aria-hidden="true">
       <h1 id="printTitle">Tableau des lessives</h1>
